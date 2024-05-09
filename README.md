@@ -1,7 +1,7 @@
 # SEPwC Landslide Risk Coursework (Python)
 ## Introduction
 
-Your task is to write code to read in muliple raster and shapefiles, perform some analysis, 
+Your task is to write code to read in multiple raster and shapefiles, perform some analysis, 
 and then generate a risk (probability) map of landslides. You should output this as a 
 raster (with values from 0 to 1).
 
@@ -16,7 +16,7 @@ from the main directory. Try it now, before you make any changes!
 You can run a single test using:
 
 ```bash
-pytest test/test_terrian.py::TestTerrainAnalysis::test_convert_rasterio
+pytest test/test_terrain.py::TestTerrainAnalysis::test_convert_rasterio
 ```
 
 You can run the unit tests only:
