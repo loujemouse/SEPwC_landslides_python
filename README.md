@@ -1,5 +1,5 @@
 # SEPwC Landslide Risk Coursework (Python)
-
+# this is the readme file for the SEPwC coursework
 ## Introduction
 
 Your task is to write code to read in muliple raster and shapefiles, perform some analysis, 
