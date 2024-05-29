@@ -1,19 +1,14 @@
 import argparse
-import rasterio
-
-# Your job is to write the definitions below so that when you run the code, it gives an output. 
-# Currently, if you run python terrain_analysis.py --topography data/AW3D30.tif --geology data/geology_raster.tif --landcover data/Landcover.tif --faults data/Confirmed_faults.shp data/landslides.shp probability.tif
-# in the terminal, nothing happens because the definitions below to open the files doesn't exist!!
-
-#""python terrain_analysis.py --topography data/AW3D30.tif --geology data/geology_raster.tif --landcover data/Landcover.tif --faults data/Confirmed_faults.shp data/landslides.shp probability.tif""
 
 def convert_to_rasterio(raster_data, template_raster):
   
     return
 
+
 def extract_values_from_raster(raster, shape_object):
 
     return
+
 
 def make_classifier(x, y, verbose=False):
 
@@ -26,6 +21,7 @@ def make_prob_raster_data(topo, geo, lc, dist_fault, slope, classifier):
 def create_dataframe(topo, geo, lc, dist_fault, slope, shape, landslides):
 
     return
+
 
 def main():
 
@@ -57,6 +53,7 @@ def main():
                     help="Print progress")
 
     args = parser.parse_args()
+
 
 if __name__ == '__main__':
     main()

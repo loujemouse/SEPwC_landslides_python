@@ -6,7 +6,6 @@ from terrain_analysis import *
 from pylint.lint import Run
 from pylint.reporters import CollectingReporter
 from dataclasses import asdict
-import rasterio
 import numpy as np
 
 class TestTerrainAnalysis():
@@ -38,8 +37,8 @@ class TestTerrainAnalysis():
 
     def test_make_classifier(self):
 
-        import sklearn
-        import geopandas as pd
+        import scipy as sklearn
+        import geopandas as gpd
         
         test_data =  np.random.normal(size=20)
         data = {
@@ -47,7 +46,7 @@ class TestTerrainAnalysis():
             "x2": test_data * 2.45,
             "y": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
         }
-        df = pd.DataFrame(data)
+        df = gpd.DataFrame(data)
         classifier = make_classifier(df.drop('y',axis=1),df['y'])
         assert type(classifier) == sklearn.ensemble._forest.RandomForestClassifier
         assert classifier.n_classes_ == 2
@@ -152,6 +151,5 @@ class TestRegression():
         assert values.max() <= 1
         assert values.min() >= 0
         os.remove("test.tif")
-
 
 
