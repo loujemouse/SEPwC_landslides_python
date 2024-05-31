@@ -37,8 +37,8 @@ class TestTerrainAnalysis():
 
     def test_make_classifier(self):
 
-        import scipy as sklearn
-        import geopandas as gpd
+        import sklearn
+        import pandas as pd
         
         test_data =  np.random.normal(size=20)
         data = {
@@ -46,7 +46,7 @@ class TestTerrainAnalysis():
             "x2": test_data * 2.45,
             "y": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
         }
-        df = gpd.DataFrame(data)
+        df = pd.DataFrame(data)
         classifier = make_classifier(df.drop('y',axis=1),df['y'])
         assert type(classifier) == sklearn.ensemble._forest.RandomForestClassifier
         assert classifier.n_classes_ == 2
@@ -151,5 +151,4 @@ class TestRegression():
         assert values.max() <= 1
         assert values.min() >= 0
         os.remove("test.tif")
-
 

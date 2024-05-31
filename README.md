@@ -5,13 +5,14 @@ Your task is to write code to read in multiple raster and shapefiles, perform so
 and then generate a risk (probability) map of landslides. You should output this as a 
 raster (with values from 0 to 1).
 
-## The tests
+## Important info
 
-The test suite uses a number of test data sets. The tests will check these data
-functions work. 
+- requirements.txt lists all python modules required and their versions for this project
+- Highly suggested to install modules in a new venv to minimise conflicts with other modules and instances
 
-You can run the tests by running `pytest` or `pytest test/test_terrain.py`
-from the main directory. Try it now, before you make any changes!
+## Running tests
+
+Run `pytest` or `pytest test/test_terrain.py` from the main directory.
 
 You can run a single test using:
 
@@ -35,9 +36,9 @@ You'll notice another test file: `test_distance.py`. This is because I could
 not find a decent function to work out the distance from a value in Python. So I
 had to write one. This is the test suite for that code.
 
-## The data
+### The data
 
-There are a number of rasters and shapefiles for this task:
+There are a number of rasters and shapefiles for this task in the /data folder:
 
  - `AW3D30.tif` - topography data
  - `Confirmed_faults.shp` - fault location data
@@ -47,13 +48,16 @@ There are a number of rasters and shapefiles for this task:
 
 From those you will also need to generate slope raster and a "distance from fault" raster.
 
-Your code should run like:
+## Running the code
+    open a powershell or terminal of your choice and run 
 
-```bash
+    ```bash
 python3 terrain_analysis.py --topography data/AW3D30.tif --geology data/geology_raster.tif --landcover data/Landcover.tif --faults data/Confirmed_faults.shp data/landslides.shp probability.tif
 ```
 
-## Hints and tips
+    in the same directory as the terrain_analysis.py file 
+
+### Hints and tips
 
 Use `geopandas` to load shapefile data and manage most of the data wrangling. 
 
@@ -71,7 +75,7 @@ in `sklearn` to do that for you (`test_train_split`). It might be helpful to pri
 or other metrics if the verbose flag is on, perhaps. You can find more random forests in python on [this
 webpage](https://www.datacamp.com/tutorial/random-forests-classifier-python).
 
-## The rules
+### The rules
 
 You cannot alter any of the assert comments in `test/test_terrain.py`
 
