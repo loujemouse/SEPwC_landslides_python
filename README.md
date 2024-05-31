@@ -52,7 +52,7 @@ From those you will also need to generate slope raster and a "distance from faul
     open a powershell or terminal of your choice and run 
 
     ```bash
-python3 terrain_analysis.py --topography data/AW3D30.tif --geology data/geology_raster.tif --landcover data/Landcover.tif --faults data/Confirmed_faults.shp data/landslides.shp probability.tif
+python terrain_analysis.py --topography data/AW3D30.tif --geology data/geology.tif --landcover data/Landcover.tif --faults data/Confirmed_faults.shp data/landslides.shp probability.tif
 ```
 
     in the same directory as the terrain_analysis.py file 

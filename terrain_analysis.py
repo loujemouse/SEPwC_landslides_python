@@ -24,11 +24,10 @@ def convert_to_rasterio(raster_data, template_raster):
     print("Echo: fetching convert_to_rasterio function...")
     with rasterio.open(template_raster) as template_raster:
         dataset = template_raster
-        dataset.indexes
         band1 = dataset.read(1)
-        raster_data = band1
         print("Echo: convert_to_rasterio function success!")
-        return template_raster, dataset.meta
+        
+        return band1, dataset.meta
 
 # Extract values from a raster based on the shapefile object provided
 def extract_values_from_raster(raster, shape_object):
@@ -41,14 +40,26 @@ def extract_values_from_raster(raster, shape_object):
 
 # A function to create and return a random forest classifier
 def make_classifier(x, y, verbose=False): 
+    X = data_df[["topo", "geo", "lc", "dist_fault", "slope"]]
+    y = data_df["landslide"]
+    classifier = make_classifier(X, y, verbose=True)
+    classifier.fit(X, y)
+
     print("Echo: fetching make_classifier function...")
     rand_forest = RandomForestClassifier(verbose=verbose)
+    
     print("Echo: make_classifier function success!")
     return rand_forest
 
 # Function to make a probability raster
 def make_prob_raster_data(topo, geo, lc, dist_fault, slope, classifier):
     print("Echo: fetching make_prob_raster_data function...")
+    topo_reshaped = topo.flatten()
+    geo_reshaped = geo.flatten()
+    lc_reshaped = lc.flatten()
+    dist_fault_reshaped = dist_fault.flatten()
+    slope_reshaped = slope.flatten()
+
     features = np.stack([topo, geo, lc, dist_fault, slope], axis=-1)
     prob_raster = classifier.predict_proba(features.reshape(-1, features.shape[-1]))[:, 1]
     print("Echo: make_prob_raster_data success!")
@@ -65,9 +76,9 @@ def create_dataframe(topo, geo, lc, dist_fault, slope, shape, landslides):
         "slope": [],
         "landslide": []
     }
-    DataFrame = pd.DataFrame(data)
+    df = pd.DataFrame(data)
 
-    GeodataFrame = gpd.geodataframe.GeoDataFrame(DataFrame)
+    GeodataFrame = gpd.geodataframe.GeoDataFrame(df)
     print("Echo: create_dataframe function success!")
     return GeodataFrame
 
@@ -127,7 +138,32 @@ def main():
 
     args = parser.parse_args()
 
+    topo = rasterio.open(args.topography)
+    geo = rasterio.open(args.geology)
+    landc = rasterio.open(args.landcover)
+    faultshapefile = gpd.read_file(args.faults)
+    landslideshapefile = gpd.read_file(args.landslides)
 
+    # Collecting required files
+    topo_raster = "data/AW3D30.tif"
+    geo_raster = "data/Geology.tif"
+    lc_raster = "data/Lancover.tif"
+    faults_shp = "data/Confirmed_faults.shp"
+    landslides_shp = "data/landslides.shp"
+    landslides = gpd.read_file(landslides_shp)
+    
+    # Create a slope raster and distance from faults
+    slope, slope_meta = calculate_slope(topo_raster)
+    dist_fault, dist_meta = calculate_distance_from_faults(faults_shp, topo_raster)
+    
+    # Convert rasters to numpy arrays matching the template raster
+    topo_data, topo_meta = convert_to_rasterio(topo_raster, topo_raster)
+    geo_data, geo_meta = convert_to_rasterio(geo_raster, topo_raster)
+    lc_data, lc_meta = convert_to_rasterio(lc_raster, topo_raster)
+    
+    # Create a dataframe
+    data_df = create_dataframe(topo_data, geo_data, lc_data, dist_fault, slope, landslides, landslides)
+    
 if __name__ == '__main__':
     
     main()
